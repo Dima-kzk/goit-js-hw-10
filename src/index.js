@@ -22,13 +22,19 @@ searchBox.addEventListener(
 
     fetchCountries(searchBox.value)
       .then(response => {
+        if (response.status === 404) {
+          countryInfo.innerHTML = '';
+          Notify.failure('Oops, there is no country with that name');
+          throw new Error(response.status);
+        }
+
         if (!response.ok) {
           throw new Error(response.status);
         }
         return response.json();
       })
       .then(countries => {
-        if (countries.length > 10) {
+        if (countries === undefined || countries.length > 10) {
           countryList.innerHTML = '';
           Notify.info(
             'Too many matches found. Please enter a more specific name.'
@@ -61,7 +67,7 @@ function showCountries(countries) {
       `<li><img src="${country.flags.svg}"><span> ${country.name.official}</span></li>`
     );
   }, '');
-  console.log(arr);
+
   countryList.innerHTML = arr;
 }
 
