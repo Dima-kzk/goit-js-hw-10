@@ -17,6 +17,7 @@ searchBox.addEventListener(
     if (searchBox.value.length === 0) {
       countryList.innerHTML = '';
       countryInfo.innerHTML = '';
+      return;
     }
 
     fetchCountries(searchBox.value)
