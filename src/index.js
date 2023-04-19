@@ -21,18 +21,6 @@ searchBox.addEventListener(
     }
 
     fetchCountries(searchBox.value)
-      .then(response => {
-        if (response.status === 404) {
-          countryInfo.innerHTML = '';
-          Notify.failure('Oops, there is no country with that name');
-          throw new Error(response.status);
-        }
-
-        if (!response.ok) {
-          throw new Error(response.status);
-        }
-        return response.json();
-      })
       .then(countries => {
         if (countries === undefined || countries.length > 10) {
           countryList.innerHTML = '';
@@ -54,9 +42,13 @@ searchBox.addEventListener(
         showCountries(countries);
       })
       .catch(error => {
+        if (Number(error.message) === 404) {
+          countryInfo.innerHTML = '';
+          Notify.failure('Oops, there is no country with that name');
+        }
         console.log(error);
       });
-  }, 300)
+  }, DEBOUNCE_DELAY)
 );
 
 function showCountries(countries) {
