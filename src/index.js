@@ -42,10 +42,8 @@ searchBox.addEventListener(
         showCountries(countries);
       })
       .catch(error => {
-        if (Number(error.message) === 404) {
-          countryInfo.innerHTML = '';
-          Notify.failure('Oops, there is no country with that name');
-        }
+        countryInfo.innerHTML = '';
+        Notify.failure('Oops, there is no country with that name');
         console.log(error);
       });
   }, DEBOUNCE_DELAY)
